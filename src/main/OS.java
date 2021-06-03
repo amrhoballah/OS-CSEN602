@@ -10,12 +10,10 @@ import java.util.Scanner;
 
 public class OS implements Kernel{
     Hashtable<String, Object> memoryHashtable;
-    String[] dictionary = {"print", "input", "readFile", "writeFile", "add", "assign"};
 
     public OS(){
         memoryHashtable = new Hashtable<>();
     }
-    
 
     @Override
     public String readFile(String fileName) throws IOException {
@@ -36,8 +34,10 @@ public class OS implements Kernel{
         try{
             String path="src/resources/"+readMemo(fileName)+".txt";
             FileWriter f = new FileWriter(path);
-            System.out.println(data);
-            f.write(readMemo(data));
+            if(readMemo(data) == null)
+                f.write(data);
+            else
+                f.write(readMemo(data));
             f.close();
             System.out.println("Successfully wrote to the file.");
         }
@@ -69,9 +69,8 @@ public class OS implements Kernel{
     }
 
     @Override
-    public String writeMemo(String varName, String data) {
+    public void writeMemo(String varName, String data) {
         memoryHashtable.put(varName, data);
-        return varName;
     }
 
     @Override
@@ -104,7 +103,6 @@ public class OS implements Kernel{
         }
         br.close();
         for (String call : s) {
-            System.out.println(call);
             execute(call);
         }
     }

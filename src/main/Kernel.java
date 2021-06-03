@@ -8,7 +8,7 @@ public interface Kernel {
     void print(String data);
     String input();
     String readMemo(String varName);
-    String writeMemo(String varName, String data); 
+    void writeMemo(String varName, String data); 
     void add(String var1, String var2);
     void parser(String programName) throws IOException;
     String execute(String systemCall) throws IOException;
