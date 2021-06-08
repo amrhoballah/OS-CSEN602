@@ -17,7 +17,11 @@ public class OS implements Kernel{
 
     @Override
     public String readFile(String fileName) throws IOException {
-        String path ="src/resources/"+readMemo(fileName)+".txt";
+        String path;
+        if(readMemo(fileName) == null)
+            path ="src/resources/"+fileName+".txt";
+        else
+            path ="src/resources/"+readMemo(fileName)+".txt";
         File file=new File(path);
         BufferedReader br=new BufferedReader(new FileReader(file));
         String str;
@@ -74,18 +78,12 @@ public class OS implements Kernel{
     }
 
     @Override
-    public void add(String var1, String var2) {
-        try{
-            int a = Integer.parseInt(readMemo(var1));
-            int b= Integer.parseInt(readMemo(var2));
-            int sum = a+b;
-            String s=sum+"";
-            writeMemo(var1,s);
-        }
-        catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-        
+    public void add(String var1, String var2) {        
+        int a = Integer.parseInt(readMemo(var1));
+        int b= Integer.parseInt(readMemo(var2));
+        int sum = a+b;
+        String s=sum+"";
+        writeMemo(var1,s);
     }
 
     @Override
