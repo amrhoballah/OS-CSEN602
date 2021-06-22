@@ -71,8 +71,7 @@ public class OS implements Kernel {
 
     @Override
     public String input() {
-        Scanner in = new Scanner(System.in);
-        return in.nextLine();
+        return new Scanner(System.in).nextLine();
     }
 
     @Override
@@ -136,8 +135,7 @@ public class OS implements Kernel {
     public void add(String var1, String var2) {
         int a = Integer.parseInt(readMemo(var1).toString());
         int b = Integer.parseInt(readMemo(var2).toString());
-        int sum = a + b;
-        writeMemo(var1, sum);
+        writeMemo(var1, a + b);
     }
 
     @Override
@@ -173,8 +171,7 @@ public class OS implements Kernel {
         String[] array = systemCall.split(" ");
         String call = array[0];
         String var1 = array.length > 1 ? array[1] : null;
-        String var2 = array.length == 3 && array[2].equals("input") ? execute("input")
-                : array.length == 3 ? var2 = array[2] : null;
+        String var2 = array.length == 3 && array[2].equals("input") ? execute("input") : array.length == 3 ? var2 = array[2] : null;
         if (array.length > 3) {
             String s = "";
             for (int i = 2; i < array.length; i++) {
@@ -242,9 +239,8 @@ public class OS implements Kernel {
     public static void main(String[] args) {
         OS os = new OS();
         try {
-            os.parser("Program 1");
-            os.parser("Program 2");
-            os.parser("Program 3");
+            for(int i=1; i<4; i++)
+                os.parser("Program "+i);
             os.scheduler();
         } catch (IOException e) {
             e.printStackTrace();
