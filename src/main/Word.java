@@ -8,8 +8,4 @@ public class Word {
         this.key = key;
         this.value = value;
     }
-    
-    public String toString(){
-        return "Key: "+this.key+"\nValue: "+this.value;
-    }
 }
