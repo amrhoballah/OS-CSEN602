@@ -1,4 +1,4 @@
-# OS-MS1
+# OS-CSEN602
 
 This is our first basic interpreter. 
 We have a text file that represents a program.
