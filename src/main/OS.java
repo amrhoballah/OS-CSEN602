@@ -5,23 +5,24 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 
 public class OS implements Kernel {
-    Hashtable<String, Object> memoryHashtable;
-    Word[] memory = new Word[35];
-    int pointer = 0;
-    int processCount = 0;
-    int ticks = 0;
+    Word[] memory;
+    int pointer;
+    int processCount;
+    int ticks;
     PCB currentPCB;
-    Queue<Integer> processQueue = new LinkedList<Integer>();
-    static int counter;
+    Queue<Integer> processQueue;
 
     public OS() {
-        memoryHashtable = new Hashtable<>();
+        memory = new Word[35];
+        processQueue = new LinkedList<Integer>();
+        ticks = 0;
+        processCount = 0;
+        pointer = 0;
     }
 
     @Override
@@ -205,18 +206,6 @@ public class OS implements Kernel {
         return "";
     }
 
-    public static void main(String[] args) {
-        OS os = new OS();
-        try {
-            os.parser("Program 1");
-            os.parser("Program 2");
-            os.parser("Program 3");
-            os.scheduler();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public void scheduler() throws IOException {
         while (!processQueue.isEmpty()) {
@@ -228,7 +217,6 @@ public class OS implements Kernel {
             currentPCB.endBoundary = (Integer) readMemo("endBoundary");
             currentPCB.processState = State.RUNNING;
             writeMemo("processState", currentPCB.processState);
-
             while (ticks < 2 && currentPCB.processState == State.RUNNING) {
                 execute(readMemo("instruction").toString());
                 currentPCB.programCounter++;
@@ -248,6 +236,18 @@ public class OS implements Kernel {
             }
             writeMemo("programCounter", currentPCB.programCounter);
             ticks = 0;
+        }
+    }
+
+    public static void main(String[] args) {
+        OS os = new OS();
+        try {
+            os.parser("Program 1");
+            os.parser("Program 2");
+            os.parser("Program 3");
+            os.scheduler();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
