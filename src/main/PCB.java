@@ -22,6 +22,12 @@ public class PCB {
         this.startBoundary = 0;
         this.endBoundary = 0;
     }
+
+    public String toString(){
+        return "PCB:\nProcess ID "+this.processId+"\nProcess State "+this.processState
+        +"\nProgram Counter "+this.programCounter+"\nMemory Boundary "
+        +this.startBoundary+" to "+this.endBoundary;
+    }
     
     public State fromStringState(String string) {
         if (string.equals("RUNNING"))

@@ -28,10 +28,11 @@ public class OS implements Kernel {
     @Override
     public String readFile(String fileName) throws IOException {
         String path;
-        if (readMemo(fileName) == null)
+        Object var = readMemo(fileName);
+        if (var == null)
             path = "src/resources/" + fileName + ".txt";
         else
-            path = "src/resources/" + readMemo(fileName) + ".txt";
+            path = "src/resources/" + var.toString() + ".txt";
         File file = new File(path);
         BufferedReader br = new BufferedReader(new FileReader(file));
         String str;
@@ -53,7 +54,6 @@ public class OS implements Kernel {
             else
                 f.write(readMemo(data).toString());
             f.close();
-            System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
@@ -63,10 +63,11 @@ public class OS implements Kernel {
 
     @Override
     public void print(String data) {
-        if (readMemo(data) == null)
+        Object var = readMemo(data);
+        if (var == null)
             System.out.println(data);
         else
-            System.out.println(readMemo(data));
+            System.out.println(var.toString());
     }
 
     @Override
@@ -97,6 +98,7 @@ public class OS implements Kernel {
             default:
                 for (int i = currentPCB.startBoundary + 5; i <= currentPCB.endBoundary; i++) {
                     if (memory[i] != null && memory[i].key.equals(varName)) {
+                        System.out.println("Memory Read - Index: "+i+"  Key: "+memory[i].key+"  Value: "+memory[i].value);
                         return memory[i].value;
                     }
                 }
@@ -121,10 +123,12 @@ public class OS implements Kernel {
                 for (int i = currentPCB.startBoundary + 5; i <= currentPCB.endBoundary; i++) {
                     if (memory[i] == null) {
                         memory[i] = new Word(varName, data);
+                        System.out.println("Memory Write - Index: "+i+"  Key: "+varName+"  Value: "+data);
                         return;
                     }
                     if (memory[i].key.equals(varName)) {
                         memory[i].value = data;
+                        System.out.println("Memory Write - Index: "+i+"  Key: "+varName+"  Value: "+data);
                         return;
                     }
                 }
@@ -154,15 +158,19 @@ public class OS implements Kernel {
         }
         br.close();
         PCB pcb = new PCB(processCount, State.NOT_RUNNING, pointer, pointer + s.length + 6);
+        System.out.println(pcb);
         processQueue.add(pcb.processId);
         writeMemo("processId", pcb.processId);
         writeMemo("processState", pcb.processState);
         writeMemo("programCounter", pcb.programCounter);
         writeMemo("startBoundary", pcb.startBoundary);
         writeMemo("endBoundary", pcb.endBoundary);
+        System.out.println("\nInstructions:");
         for (String call : s) {
+            System.out.println(call);
             writeMemo("instruction", call);
         }
+        System.out.println("\n");
         pointer += 2;
     }
 
@@ -208,6 +216,7 @@ public class OS implements Kernel {
         while (!processQueue.isEmpty()) {
             currentPCB = new PCB();
             currentPCB.processId = processQueue.peek();
+            System.out.println("Chosen Program: " + currentPCB.processId);
             currentPCB.startBoundary = (Integer) readMemo("startBoundary");
             currentPCB.processState = currentPCB.fromStringState(readMemo("processState").toString());
             currentPCB.programCounter = (Integer) readMemo("programCounter");
@@ -232,6 +241,7 @@ public class OS implements Kernel {
                 processQueue.remove();
             }
             writeMemo("programCounter", currentPCB.programCounter);
+            System.out.println("Program " + currentPCB.processId + " Ran for " + ticks + " Time Slice(s)\n");
             ticks = 0;
         }
     }
