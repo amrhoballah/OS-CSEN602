@@ -1,5 +1,10 @@
 # OS-MS1
 
-This is our first basic interpreter. 
-We have a text file that represents a program.
-The aim is to be able to read the text file and perform the corresponding system calls
+Team 128
+
+Team Members:
+
+Haya Tawakol — Task 1
+Nadeen Sayed — Task 2
+Amr Hoballah — Task 3
+
