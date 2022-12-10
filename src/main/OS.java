@@ -223,7 +223,7 @@ public class OS implements Kernel {
             currentPCB.endBoundary = (Integer) readMemo("endBoundary");
             currentPCB.processState = State.RUNNING;
             writeMemo("processState", currentPCB.processState);
-            while (ticks < 2 && currentPCB.processState == State.RUNNING) {
+            while (ticks < 3 && currentPCB.processState == State.RUNNING) {
                 execute(readMemo("instruction").toString());
                 currentPCB.programCounter++;
                 if (currentPCB.programCounter + currentPCB.startBoundary + 5 == currentPCB.endBoundary - 1) {
@@ -249,8 +249,10 @@ public class OS implements Kernel {
     public static void main(String[] args) {
         OS os = new OS();
         try {
-            for(int i=1; i<4; i++)
-                os.parser("Program "+i);
+            //for(int i=1; i<4; i++)
+            os.parser("Program 3");
+            os.parser("Program 2");
+            os.parser("Program 1");
             os.scheduler();
         } catch (IOException e) {
             e.printStackTrace();
